@@ -152,7 +152,7 @@ Shared config for all environments and modules — sets up remote state and prov
 
 infra/envs/dev/vpc/terragrunt.hcl
 
-![Uploading image.png…]()
+<img width="491" height="752" alt="image" src="https://github.com/user-attachments/assets/2c36d8c7-552e-4969-8196-7af8814548b5" />
 
 **Commands:**
 
