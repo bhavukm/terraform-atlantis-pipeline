@@ -1,6 +1,6 @@
 # terraform-atlantis-pipeline
 
-Terraform based CI Pipeline
+**Terraform based CI Pipeline**
 
 <img width="796" height="506" alt="Atlantis1 drawio" src="https://github.com/user-attachments/assets/0505758b-ec00-4296-8b1c-edd7c23d9295" />
 
