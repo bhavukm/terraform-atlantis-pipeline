@@ -7,9 +7,12 @@
 **Q.1:  How to explain a Terraform-based infrastructure production pipeline in an interview?**
 
 **Ans:** In our setup, Terraform deployments are fully automated through Atlantis and Terragrunt. 
+
 Each environment (dev, qa, prod) has its own Terragrunt configuration, and state files are isolated in an S3 backend.
 
-Developers never run Terraform apply locally. They push code to GitLab, which triggers static validation and tfsec scans. Atlantis handles the plan/apply workflow via pull (or merge) requests on the GitLab CI, ensuring auditability and approvals.
+Developers never run Terraform apply locally. They push code to GitLab, which triggers static validation and tfsec scans. Atlantis handles the plan/apply workflow via pull (or merge) requests on the GitLab CI, ensuring auditability and 
+
+approvals.
 
 This ensures environmental consistency, eliminates manual errors, and provides a clear approval workflow, a key production-grade practice.
 
@@ -18,9 +21,13 @@ This ensures environmental consistency, eliminates manual errors, and provides a
 **Ans:** Terraform is the main Infrastructure-as-Code (IaC) tool from HashiCorp.
 
 **It lets you:**
+
 Define infrastructure as code using .tf files
+
 Create reproducible environments
+
 Manage infrastructure lifecycle (init, plan, apply, destroy)
+
 Store state (locally or remotely)
 
 But when you start using Terraform in a real production setup with multiple environments, modules, and teams, you quickly hit challenges.
@@ -38,9 +45,11 @@ You often have separate folders like dev, qa, prod, each repeating similar code 
 Managing remote state configurations per environment (like S3 backend and DynamoDB lock) becomes repetitive.
 
 **Complexity with Modules**
+
 Reusing shared modules across environments can lead to long, error-prone path references.
 
 **Team Collaboration**
+
 Without automation, teams manually run terraform plan and terraform apply, which introduces human errors and inconsistent changes.
 
 **Terragrunt: The Terraform Wrapper or Terraform Orchestrator**
@@ -62,6 +71,7 @@ This is where Atlantis comes in.
 Atlantis is a self-hosted service that automates Terraform commands through Git workflows.
 
 **In short:**
+
 It lets you run terraform plan and terraform apply directly from your GitLab or GitHub Pull or Merge Requests.
 
 **How Atlantis Works?**
@@ -97,40 +107,65 @@ Let us understand with an example (Note: This is not a hands-on demo).
 **Limitations with Terraform:**
 
 1. backend.tf (Repeated in every environment)
+   
 terraform {
+
   backend "s3" {
+  
     bucket = "my-terraform-states"
+    
     key    = "dev/terraform.tfstate"  # this changes per env
+    
     region = "us-east-1"
+    
   }
+  
 }
 
-2. provider.tf (Repeated as well in some cases)
+3. provider.tf (Repeated as well in some cases)
 
 terraform {
+
   required_providers {
+  
     aws = {
+  
       source  = "hashicorp/aws"
+      
       version = "~> 5.0" # Specifies a compatible update constraint for AWS provider
+      
     }
+    
     random = {
+    
       source  = "hashicorp/random"
+      
       version = "3.1.0" # Specifies an exact version for the Random provider
+      
     }
+    
   }
+  
   required_version = ">= 1.2.0" # Specifies the minimum required Terraform CLI version
+  
 }
 
 provider "aws" {
+
   region = "us-east-1" # Configuration specific to the AWS provider
+  
 }
 
 3. modules
 
 module "vpc" {
+
   source = "../../modules/vpc"
+  
   cidr_block   = "10.0.0.0/16"
+  
   subnet_cidr  = "10.0.1.0/24"
+  
 }
 
 # The pain point: Terraform can’t automatically pass outputs from one module to another
@@ -148,11 +183,15 @@ module "ec2" {
 
 
 **In Short:**
+
 Terraform with .tfvars helps parameterize environments,
+
 but Terragrunt helps structure, scale, and orchestrate multi-environment, multi-module infrastructure.
 
 **So:**
+
 If you have one or two modules → Terraform + .tfvars is fine.
+
 If you manage 10+ modules across 3 environments → Terragrunt saves you time and mistakes.
 
 **Terragrunt Folder structure:**
