@@ -108,79 +108,21 @@ Let us understand with an example (Note: This is not a hands-on demo).
 
 1. backend.tf (Repeated in every environment)
    
-terraform {
+<img width="592" height="172" alt="image" src="https://github.com/user-attachments/assets/ce867bd3-a6dc-4e0e-b78f-41a4fcc14fd4" />
 
-  backend "s3" {
-  
-    bucket = "my-terraform-states"
-    
-    key    = "dev/terraform.tfstate"  # this changes per env
-    
-    region = "us-east-1"
-    
-  }
-  
-}
+2. provider.tf (Repeated as well in some cases)
 
-3. provider.tf (Repeated as well in some cases)
-
-terraform {
-
-  required_providers {
-  
-    aws = {
-  
-      source  = "hashicorp/aws"
-      
-      version = "~> 5.0" # Specifies a compatible update constraint for AWS provider
-      
-    }
-    
-    random = {
-    
-      source  = "hashicorp/random"
-      
-      version = "3.1.0" # Specifies an exact version for the Random provider
-      
-    }
-    
-  }
-  
-  required_version = ">= 1.2.0" # Specifies the minimum required Terraform CLI version
-  
-}
-
-provider "aws" {
-
-  region = "us-east-1" # Configuration specific to the AWS provider
-  
-}
+<img width="847" height="418" alt="image" src="https://github.com/user-attachments/assets/0a8837b1-db32-44c0-980a-0abc09fbed8f" />
 
 3. modules
 
-module "vpc" {
-
-  source = "../../modules/vpc"
-  
-  cidr_block   = "10.0.0.0/16"
-  
-  subnet_cidr  = "10.0.1.0/24"
-  
-}
+<img width="312" height="127" alt="image" src="https://github.com/user-attachments/assets/d464bfff-dff6-4e3b-89fc-3ac78e1548ff" />
 
 # The pain point: Terraform can’t automatically pass outputs from one module to another
 
 # You must manually wire them:
 
-module "ec2" {
-
-  source       = "../../modules/ec2"
-  
-  subnet_id    = module.vpc.subnet_id
-  
-  instance_name = "dev-instance"
-}
-
+<img width="376" height="140" alt="image" src="https://github.com/user-attachments/assets/a6b32776-2540-4fb2-8fde-a5cf3530847f" />
 
 **In Short:**
 
@@ -204,83 +146,13 @@ Shared config for all environments and modules — sets up remote state and prov
 
 # infra/terragrunt.hcl
 
-remote_state {
+<img width="491" height="752" alt="image" src="https://github.com/user-attachments/assets/5d71b5b4-5d32-416b-89ae-ed1ac272c02a" />
 
-  backend = "s3"
-  
-  config = {
-  
-    bucket = "my-terraform-states"
-    
-    key    = "${path_relative_to_include()}/terraform.tfstate"
-    
-    region = "us-east-1"
-  }
-}
-
-generate "provider" {
-
-  path      = "provider.tf"
-  
-  if_exists = "overwrite"
-  
-  contents  = <<EOF
-  
-provider "aws" {
-
-  region = "us-east-1"
-}
-EOF
-}
-
-Dev Environment:
+**Dev Environment:**
 
 infra/envs/dev/vpc/terragrunt.hcl
 
-include "root" {
-
-  path = find_in_parent_folders()
-}
-
-terraform {
-
-  source = "../../../modules/vpc"
-  
-}
-
-inputs = {
-
-  cidr_block   = "10.0.0.0/16"
-  
-  subnet_cidr  = "10.0.1.0/24"
-  
-}
-
-infra/envs/dev/ec2/terragrunt.hcl
-
-include "root" {
-
-  path = find_in_parent_folders()
-}
-
-terraform {
-
-  source = "../../../modules/ec2"
-}
-
-dependencies {
-
-  paths = ["../vpc"]
-  
-}
-
-inputs = {
-
-  instance_name = "dev-ec2"
-  
-  subnet_id     = dependency.vpc.outputs.subnet_id
-  
-}
+![Uploading image.png…]()
 
 **Commands:**
 
