@@ -92,28 +92,9 @@ Let us understand with an example (Note: This is not a hands-on demo).
 
 **Terraform folder structure:**
 
-infra/
-├── modules/
-│   ├── vpc/
-│   │   └── main.tf
-│   └── ec2/
-│       └── main.tf
-├── main.tf
-├── variable.tf
-├── data.tf
-├── locals.tf
-├── outputs.tf
-├── envs/
-│   ├── dev/
-│   │   ├── dev.tfvars
-│   │   ├── backend.tf
-│   │   └── provider.tf
-│   └── prod/
-│       ├── prod.tfvars
-│       ├── backend.tf
-│       └── provider.tf
+<img width="247" height="492" alt="image" src="https://github.com/user-attachments/assets/f0d64e9e-3a8e-47e2-be63-4080befed753" />
 
-Limitations with Terraform:
+**Limitations with Terraform:**
 
 1. backend.tf (Repeated in every environment)
 terraform {
@@ -174,31 +155,9 @@ but Terragrunt helps structure, scale, and orchestrate multi-environment, multi-
 If you have one or two modules → Terraform + .tfvars is fine.
 If you manage 10+ modules across 3 environments → Terragrunt saves you time and mistakes.
 
-Terragrunt Folder structure:
+**Terragrunt Folder structure:**
 
-infra/
-├── modules/
-│   ├── vpc/
-│   │   └── main.tf
-│   └── ec2/
-│       └── main.tf
-├── main.tf
-├── variable.tf
-├── data.tf
-├── locals.tf
-├── outputs.tf
-├── terragrunt.hcl
-└── envs/
-    ├── dev/
-    │   ├── vpc/
-    │   │   └── terragrunt.hcl
-    │   └── ec2/
-    │       └── terragrunt.hcl
-    └── prod/
-        ├── vpc/
-        │   └── terragrunt.hcl
-        └── ec2/
-            └── terragrunt.hcl
+<img width="302" height="555" alt="image" src="https://github.com/user-attachments/assets/10db7ee7-2ee8-4bb2-b6e5-257d5a9ddd15" />
 
 Root infra/terragrunt.hcl
 
