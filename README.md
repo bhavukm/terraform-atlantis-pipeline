@@ -2,7 +2,7 @@
 
 **Terraform based CI Pipeline**
 
-<img width="796" height="506" alt="Atlantis1 drawio" src="https://github.com/user-attachments/assets/0505758b-ec00-4296-8b1c-edd7c23d9295" />
+<img width="782" height="517" alt="Atlantinew-latest" src="https://github.com/user-attachments/assets/3cf7786a-000a-4d0d-b778-5bec2296a6f2" />
 
 **Q.1:  How to explain a Terraform-based infrastructure production pipeline in an interview?**
 
@@ -165,3 +165,30 @@ terragrunt run-all init
 terragrunt run-all plan
 
 terragrunt run-all apply
+
+On the GitLab UI, the stage names could be as follows:
+
+<img width="1100" height="476" alt="image" src="https://github.com/user-attachments/assets/f8758818-2e16-4f4a-a391-a1d5103a4cb7" />
+
+Final step to apply terragrunt-based terraform apply is via a comment on the raised MR section:
+
+Example comments to deploy the infrastructure:
+
+# Runs apply for all unapplied plans from this pull request.
+
+atlantis apply
+
+# Runs apply in the root directory of the repo with workspace `default`.
+
+atlantis apply -d .
+
+# Runs apply in the `project1` directory of the repo with workspace `default`
+
+atlantis apply -p project1
+
+# Runs apply in the root directory of the repo with workspace `staging`
+
+atlantis apply -w staging
+
+Source: https://www.runatlantis.io/docs/using-atlantis
+
