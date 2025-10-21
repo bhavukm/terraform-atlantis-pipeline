@@ -82,17 +82,17 @@ The Atlantis webhook gets triggered.
 
 Atlantis runs:
 
-terragrunt plan
+_terragrunt plan_
 
 and posts the plan result as a comment in the MR.
 
 Reviewer checks and comments:
 
-atlantis apply
+_atlantis apply_
 
 Atlantis then securely runs:
 
-terragrunt apply
+_terragrunt apply_
 
 and applies it in the correct environment.
 
@@ -158,13 +158,13 @@ infra/envs/dev/vpc/terragrunt.hcl
 
 Go to your environment folder and run:
 
-cd infra/envs/dev
+_cd infra/envs/dev_
 
-terragrunt run-all init
+_terragrunt run-all init_
 
-terragrunt run-all plan
+_terragrunt run-all plan_
 
-terragrunt run-all apply
+_terragrunt run-all apply_
 
 On the GitLab UI, the stage names could be as follows:
 
@@ -176,19 +176,19 @@ Example comments to deploy the infrastructure:
 
 # Runs apply for all unapplied plans from this pull request.
 
-atlantis apply
+_atlantis apply_
 
 # Runs apply in the root directory of the repo with workspace `default`.
 
-atlantis apply -d .
+_atlantis apply -d ._
 
 # Runs apply in the `project1` directory of the repo with workspace `default`
 
-atlantis apply -p project1
+_atlantis apply -p project1_
 
 # Runs apply in the root directory of the repo with workspace `staging`
 
-atlantis apply -w staging
+_atlantis apply -w staging_
 
 Source: https://www.runatlantis.io/docs/using-atlantis
 
